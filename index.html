@@ -12,3 +12,26 @@
    <script src="script.js"></script>
    <title>Frontend Mentor | Calculator app</title>
 </head>
+   
+   <body onkeydown="keyPress(event)">
+
+   <div class="calculator">
+
+      <div class="calculator-heading">
+         <h1>calc</h1>
+         <div class="theme-setter">
+            <div class="label-level">
+               <label>1</label>
+               <label>2</label>
+               <label>3</label>
+            </div>
+            <div class="slider-level">
+               <label class="theme-label">THEME</label>
+               <input type="range" min="0" max="2" value="0" class="slider" onClick="chooseSlide()" />
+            </div>
+         </div>
+      </div>
+
+      <div class="calculator-screen">
+         <p class="result"></p>
+      </div>
