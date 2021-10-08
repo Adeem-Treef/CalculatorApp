@@ -54,3 +54,70 @@ function chooseSlide() {
         console.log("Theme doesn't exists");
     }
 }
+function keyPress(event)
+{
+    let regex = /[0-9]|[.,+-/*]/;
+    // used , as an alternate for √ which wasn't available on the keyboard i was working on.
+    if(regex.test(event.key)){
+        if(event.key === ','){
+            displayKeys('√');
+        } else {
+            displayKeys(event.key);
+        }
+    } else if (event.key === "Backspace"){
+        deleteKey();
+    }else if (event.key === "Delete"){
+        resetKeys();
+    } else if (event.key === "=" || event.key === "Enter"){
+        getResult();
+    } else {
+        console.log("Not a part of calc keypad");
+    }
+}
+
+function displayKeys(key) {
+    let regex= /[.+-/*]/;
+    keysArray.push(key);
+    if(regex.test(keysArray[0]) || (/[√]/.test(keysArray[keysArray.length-1]) && /[√]/.test(keysArray[keysArray.length-2]))){
+        keysArray.pop();
+    } else if (regex.test(keysArray[keysArray.length-1]) && regex.test(keysArray[keysArray.length-2])){
+        keysArray.pop();
+    } else{
+        document.querySelector("body > div.calculator > div.calculator-screen > p").innerHTML = keysArray.join('');
+    }
+}
+
+function deleteKey() {
+    if (keysArray.length === 0) {
+        console.log("Delete operation failed: Keys array empty");
+    } else {
+        let keyPopped = keysArray.pop();
+        console.log(`key popped: ${keyPopped}`);
+        document.querySelector("body > div.calculator > div.calculator-screen > p").innerHTML = keysArray.join('');
+    }
+}
+
+function resetKeys() {
+    keysArray = [];
+    document.querySelector("body > div.calculator > div.calculator-screen > p").innerHTML = "";
+}
+
+function getResult() {
+    let regex = /[√]/;
+    let expression = keysArray.join('');
+    keysArray = expression.split(/([+-/*√])/).filter(Boolean);
+    for(var i=0; i<keysArray.length; i++){
+        if(regex.test(keysArray[i])){
+            keysArray[i] = Math.sqrt(keysArray[i+1])
+            keysArray.splice(i+1,1);
+        }
+    }
+    let x = Function('return ' + keysArray.join(''))()
+    if (x ||  x === 0) {
+        document.querySelector("body > div.calculator > div.calculator-screen > p").innerHTML = parseFloat(x.toFixed(5));
+    }else{
+        console.log("Value's have not been entered");
+        document.querySelector("body > div.calculator > div.calculator-screen > p").innerHTML = "";  
+    }
+    keysArray = [];
+}
