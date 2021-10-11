@@ -1,4 +1,4 @@
-w// Elements
+
 const keyContainer = document.querySelector('.key-items');
 const toggleBar = document.querySelector('.toggle-bar');
 const content = document.querySelector('.content');
